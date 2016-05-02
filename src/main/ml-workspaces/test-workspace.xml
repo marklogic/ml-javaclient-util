@@ -1,0 +1,5 @@
+<export><workspace name="Workspace"><query name="Query 1" focus="false" active="true" mode="xquery">xdmp:collection-delete("uploaded")</query><query name="Query 2" focus="false" active="true" mode="xquery">xdmp:collection-delete("notification")</query><query name="Query 3" focus="false" active="true" mode="xquery">cts:search(
+  collection("case"),
+  cts:word-query("000?31-?810", ("wildcarded"))
+)</query><query name="Query 4" focus="true" active="true" mode="xquery">xquery version "1.0-ml";
+cts:uri-match("*workspace.xml")</query></workspace></export>
