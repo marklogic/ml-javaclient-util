@@ -16,11 +16,15 @@ import java.io.IOException;
 public class DefaultWorkspaceManagerDebug {
 
     public static void main(String[] args) throws IOException {
-        DatabaseClient client = DatabaseClientFactory.newClient("localhost", 8000, "App-Services", "admin", "admin", DatabaseClientFactory.Authentication.DIGEST);
+        DatabaseClient client = DatabaseClientFactory.newClient("obp-test-1.demo.marklogic.com", 8000, "App-Services", "thale", "isSparta", DatabaseClientFactory.Authentication.DIGEST);
         DefaultWorkspaceManager dwm = new DefaultWorkspaceManager(client);
-        String user = "admin";
+        String user = "thale";
+        String[] workspaces = {"workspace"};
+//      String[] workspaces = null;
+//      String[] workspaces = {"bogus name"};
+//      String[] workspaces = {"workspace", "test name"};
         try {
-            System.out.println(dwm.exportWorkspaces(user));
+            System.out.println(dwm.exportWorkspaces(user, workspaces));
             System.out.println(dwm.importWorkspaces(user));
         } finally {
             client.release();

@@ -7,7 +7,9 @@ import com.marklogic.client.io.DOMHandle;
 import com.marklogic.client.io.FileHandle;
 import com.marklogic.client.io.Format;
 import com.marklogic.client.qconsole.WorkspaceManager;
+
 import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,10 +34,18 @@ public class DefaultWorkspaceManager extends LoggingObject implements WorkspaceM
     public List<File> exportWorkspaces(String user, String... workspaceNames) {
         String xquery = "declare namespace qconsole='http://marklogic.com/appservices/qconsole'; " +
                 "declare variable $user external; " +
-                "cts:search(/qconsole:workspace, cts:element-value-query(xs:QName('qconsole:userid'), string(xdmp:user($user))))";
+                "declare variable $workspaceNames external; " +
+                
+                "let $workspaceQuery := if ($workspaceNames) "
+                + "then (cts:element-value-query(xs:QName('qconsole:name'), ((fn:tokenize($workspaceNames, ','))))) else () "
+                + "let $_ := xdmp:log($workspaceQuery)"
+                + "return "
+                + "cts:search(/qconsole:workspace, "
+                + "cts:and-query((cts:element-value-query(xs:QName('qconsole:userid'), string(xdmp:user($user))), $workspaceQuery)))";
 
         EvalResultIterator result = client.newServerEval()
                 .addVariable("user", user)
+                .addVariable("workspaceNames", StringUtils.arrayToCommaDelimitedString(workspaceNames))
                 .xquery(xquery).eval();
 
         if (baseDir == null) {
