@@ -1,22 +1,6 @@
 package com.marklogic.client.qconsole.impl;
 
-import com.marklogic.client.DatabaseClient;
-import com.marklogic.client.eval.EvalResultIterator;
-import com.marklogic.client.helper.LoggingObject;
-import com.marklogic.client.io.DOMHandle;
-import com.marklogic.client.io.FileHandle;
-import com.marklogic.client.io.Format;
-import com.marklogic.client.qconsole.WorkspaceManager;
-
-import org.springframework.util.FileCopyUtils;
-import org.springframework.util.StringUtils;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +9,20 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import com.marklogic.client.DatabaseClient;
+import com.marklogic.client.eval.EvalResultIterator;
+import com.marklogic.client.helper.LoggingObject;
+import com.marklogic.client.io.DOMHandle;
+import com.marklogic.client.io.FileHandle;
+import com.marklogic.client.io.Format;
+import com.marklogic.client.qconsole.WorkspaceManager;
 
 /**
  * Default implementation that uses the ML Java Client API to manage workspaces. By default, workspaces
