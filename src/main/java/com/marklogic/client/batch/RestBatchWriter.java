@@ -87,4 +87,28 @@ public class RestBatchWriter extends BatchWriterSupport {
 	public void setServerTransform(ServerTransform serverTransform) {
 		this.serverTransform = serverTransform;
 	}
+
+	public List<DatabaseClient> getDatabaseClients() {
+		return databaseClients;
+	}
+
+	public void setDatabaseClients(List<DatabaseClient> databaseClients) {
+		this.databaseClients = databaseClients;
+	}
+
+	public int getClientIndex() {
+		return clientIndex;
+	}
+
+	public void setClientIndex(int clientIndex) {
+		this.clientIndex = clientIndex;
+	}
+
+	public boolean isReleaseDatabaseClients() {
+		return releaseDatabaseClients;
+	}
+
+	public ServerTransform getServerTransform() {
+		return serverTransform;
+	}
 }
