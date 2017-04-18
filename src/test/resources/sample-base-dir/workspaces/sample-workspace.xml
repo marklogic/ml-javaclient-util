@@ -1,0 +1,4 @@
+<export><workspace name="Tammy"><query name="Tammy" focus="false" active="true" content-source="as:2185662400196044862:" mode="xquery">xdmp:collection-delete("uploaded")</query><query name="Query 2" focus="false" active="true" content-source="as:6415496837299867476:" mode="xquery">xdmp:collection-delete("notification")</query><query name="Query 3" focus="true" active="true" content-source="as:6175166376993811574:" mode="xquery">cts:search(
+  collection("case"),
+  cts:word-query("000?31-?810", ("wildcarded"))
+)</query></workspace></export>
