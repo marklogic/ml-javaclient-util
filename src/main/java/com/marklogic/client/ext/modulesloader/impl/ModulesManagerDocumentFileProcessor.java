@@ -4,7 +4,6 @@ import com.marklogic.client.ext.file.DocumentFile;
 import com.marklogic.client.ext.file.DocumentFileProcessor;
 import com.marklogic.client.ext.modulesloader.ModulesManager;
 
-import java.io.File;
 import java.util.Date;
 
 public class ModulesManagerDocumentFileProcessor implements DocumentFileProcessor {
@@ -17,12 +16,11 @@ public class ModulesManagerDocumentFileProcessor implements DocumentFileProcesso
 
 	@Override
 	public DocumentFile processDocumentFile(DocumentFile documentFile) {
-		File file = documentFile.getFile();
-		if (file != null) {
-			if (!modulesManager.hasFileBeenModifiedSinceLastLoaded(file)) {
+		if (documentFile != null) {
+			if (!modulesManager.hasDocumentFileBeenModifiedSinceLastLoaded(documentFile)) {
 				return null;
 			}
-			modulesManager.saveLastLoadedTimestamp(file, new Date());
+			modulesManager.saveLastLoadedTimestamp(documentFile, new Date());
 		}
 		return documentFile;
 	}

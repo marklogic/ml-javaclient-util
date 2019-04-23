@@ -232,10 +232,11 @@ public class DefaultModulesLoader extends LoggingObject implements ModulesLoader
 		if (r == null || !r.exists() || ignoreResource(r)) {
 			return;
 		}
-		File f = getFileFromResource(r);
-		if (f != null && modulesManager != null && !modulesManager.hasFileBeenModifiedSinceLastLoaded(f)) {
+		if (!hasFileBeenModified(r)) {
 			return;
 		}
+
+		File f = getFileFromResource(r);
 
 		ServerConfigurationManager mgr = client.newServerConfigManager();
 		if (f.getName().endsWith("xml")) {
@@ -742,7 +743,7 @@ public class DefaultModulesLoader extends LoggingObject implements ModulesLoader
 		if (modulesManager != null) {
 			try {
 				File file = resource.getFile();
-				modified = modulesManager.hasFileBeenModifiedSinceLastLoaded(file);
+				modified = file != null && modulesManager.hasFileBeenModifiedSinceLastLoaded(file);
 			} catch (IOException e) {
 			}
 		}

@@ -1,5 +1,6 @@
 package com.marklogic.client.ext.modulesloader.impl;
 
+import com.marklogic.client.ext.file.DocumentFile;
 import com.marklogic.client.ext.helper.LoggingObject;
 import com.marklogic.client.ext.modulesloader.ModulesManager;
 
@@ -64,7 +65,17 @@ public class PropertiesModuleManager extends LoggingObject implements ModulesMan
         }
     }
 
-    public boolean hasFileBeenModifiedSinceLastLoaded(File file) {
+	/**
+	 *
+	 * @param file
+	 * @return
+	 */
+	@Override
+	public boolean hasFileBeenModifiedSinceLastLoaded(File file) {
+		if (file == null) {
+			return false;
+		}
+
     	if (minimumFileTimestampToLoad > 0 && file.lastModified() <= minimumFileTimestampToLoad) {
     		if (logger.isDebugEnabled()) {
     			logger.debug(String.format("lastModified for file '%s' is %d, which is before the minimumFileTimestampToLoad of %d",
@@ -83,7 +94,17 @@ public class PropertiesModuleManager extends LoggingObject implements ModulesMan
         return true;
     }
 
-    public void saveLastLoadedTimestamp(File file, Date date) {
+	/**
+	 *
+	 * @param file
+	 * @param date
+	 */
+	@Override
+	public void saveLastLoadedTimestamp(File file, Date date) {
+		if (file == null || date == null) {
+			return;
+		}
+
         String key = buildKey(file);
         props.setProperty(key, date.getTime() + "");
         FileWriter fw = null;
@@ -101,7 +122,17 @@ public class PropertiesModuleManager extends LoggingObject implements ModulesMan
         }
     }
 
-    /**
+	@Override
+	public boolean hasDocumentFileBeenModifiedSinceLastLoaded(DocumentFile documentFile) {
+		return hasFileBeenModifiedSinceLastLoaded(documentFile.getFile());
+	}
+
+	@Override
+	public void saveLastLoadedTimestamp(DocumentFile documentFile, Date date) {
+		saveLastLoadedTimestamp(documentFile.getFile(), date);
+	}
+
+	/**
      * Lower-casing avoids some annoying issues on Windows where sometimes you get "C:" at the start, and other times
      * you get "c:". This of course will be a problem if you for some reason have modules with the same names but
      * differing in some cases, but I'm not sure why anyone would do that.
