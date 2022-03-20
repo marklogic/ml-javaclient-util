@@ -56,7 +56,7 @@ public class XccTemplate {
     }
 
     public <T> T execute(XccCallback<T> callback) {
-		Session session = contentSource.newSession();
+        Session session = contentSource.newSession();
         try {
             return callback.execute(session);
         } catch (RequestException re) {
