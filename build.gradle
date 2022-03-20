@@ -17,11 +17,13 @@ repositories {
 }
 
 dependencies {
-  api 'com.marklogic:marklogic-client-api:5.5.0'
-  api 'com.marklogic:marklogic-xcc:10.0.7'
+	api 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
+  api 'com.marklogic:marklogic-client-api:5.5.2'
+  api 'com.marklogic:marklogic-xcc:10.0.9'
+	api 'org.slf4j:slf4j-api:1.7.30'
   api 'org.springframework:spring-context:5.3.9'
 
-  implementation 'org.jdom:jdom2:2.0.6'
+	implementation 'org.jdom:jdom2:2.0.6'
 
 	// This isn't the latest release, but it matches what is used by the ML Java Client
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
