@@ -1,6 +1,5 @@
 package com.marklogic.client.ext.modulesloader.impl;
 
-import com.marklogic.client.ext.helper.FilenameUtil;
 import com.marklogic.client.ext.helper.LoggingObject;
 import com.marklogic.client.ext.modulesloader.Modules;
 import com.marklogic.client.ext.modulesloader.ModulesFinder;
@@ -11,7 +10,6 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,7 +75,7 @@ public abstract class BaseModulesFinder extends LoggingObject implements Modules
 				if (!(isRecognized || hasWeirdWarPath)) {
 					boolean isDir = (resource instanceof FileSystemResource && f.isDirectory());
 					boolean isUrlResource = (resource instanceof UrlResource);
-					boolean notInList = dirs.indexOf(resource) < 0;
+					boolean notInList = !dirs.contains(resource);
 					if ((isDir || isUrlResource) && notInList) {
 						dirs.add(resource);
 					}

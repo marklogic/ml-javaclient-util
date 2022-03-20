@@ -3,7 +3,6 @@ package com.marklogic.client.ext.modulesloader.impl;
 import com.marklogic.client.ext.AbstractIntegrationTest;
 import com.marklogic.client.DatabaseClient;
 import com.marklogic.client.ext.file.JarDocumentFileReader;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.Resource;
