@@ -36,6 +36,7 @@ public class DefaultSchemasLoader extends GenericFileLoader implements SchemasLo
 
 	private DatabaseClient schemasDatabaseClient;
 	private String tdeValidationDatabase;
+	private QbvDocumentFileProcessor qbvDocumentFileProcessor;
 
 	/**
 	 * Simplest constructor for using this class. Just provide a DatabaseClient, and this will use sensible defaults for
@@ -75,7 +76,10 @@ public class DefaultSchemasLoader extends GenericFileLoader implements SchemasLo
 	 * Assumes that the BatchWriter has already been initialized.
 	 *
 	 * @param batchWriter
+	 * @deprecated Since 4.6.0; this class needs a DatabaseClient for the schemas database passed to it so that it can
+	 * pass that client on to specific file processors.
 	 */
+	@Deprecated
 	public DefaultSchemasLoader(BatchWriter batchWriter) {
 		super(batchWriter);
 		initializeDefaultSchemasLoader();
@@ -86,7 +90,9 @@ public class DefaultSchemasLoader extends GenericFileLoader implements SchemasLo
 	 * a DocumentFileReader by the parent class.
 	 */
 	protected void initializeDefaultSchemasLoader() {
+		this.qbvDocumentFileProcessor = new QbvDocumentFileProcessor(this.schemasDatabaseClient);
 		addDocumentFileProcessor(new TdeDocumentFileProcessor(this.schemasDatabaseClient, this.tdeValidationDatabase));
+		addDocumentFileProcessor(this.qbvDocumentFileProcessor);
 		addFileFilter(new DefaultFileFilter());
 	}
 
@@ -101,6 +107,7 @@ public class DefaultSchemasLoader extends GenericFileLoader implements SchemasLo
 	public List<DocumentFile> loadSchemas(String... paths) {
 		final List<DocumentFile> documentFiles = super.getDocumentFiles(paths);
 		if (documentFiles.isEmpty()) {
+			this.qbvDocumentFileProcessor.processQbvFiles();
 			return documentFiles;
 		}
 
@@ -126,11 +133,11 @@ public class DefaultSchemasLoader extends GenericFileLoader implements SchemasLo
 				}
 				super.writeDocumentFiles(nonTdeFiles);
 			}
-
-			return documentFiles;
+		} else {
+			writeDocumentFiles(documentFiles);
 		}
 
-		writeDocumentFiles(documentFiles);
+		this.qbvDocumentFileProcessor.processQbvFiles();
 		return documentFiles;
 	}
 
