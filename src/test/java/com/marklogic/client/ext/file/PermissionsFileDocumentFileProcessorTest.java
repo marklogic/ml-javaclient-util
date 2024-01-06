@@ -47,7 +47,15 @@ public class PermissionsFileDocumentFileProcessorTest {
 		assertTrue(permissions.get("manage-user").contains(DocumentMetadataHandle.Capability.READ));
 		assertTrue(permissions.get("manage-user").contains(DocumentMetadataHandle.Capability.UPDATE));
 		assertTrue(permissions.get("manage-admin").contains(DocumentMetadataHandle.Capability.UPDATE));
-		assertNull(permissions.get("qconsole-user"));
+		assertTrue(permissions.get("qconsole-user").contains(DocumentMetadataHandle.Capability.READ));
+
+		file = new DocumentFile("/test-1.json", new File(testDir, "test-1.json"));
+		processor.processDocumentFile(file);
+		permissions = file.getDocumentMetadata().getPermissions();
+		assertTrue(permissions.get("manage-user").contains(DocumentMetadataHandle.Capability.READ));
+		assertFalse(permissions.get("manage-user").contains(DocumentMetadataHandle.Capability.UPDATE));
+		assertNull(permissions.get("manage-admin"));
+		assertTrue(permissions.get("qconsole-user").contains(DocumentMetadataHandle.Capability.READ));
 
 		file = new DocumentFile("/test.xml", new File(testDir, "test.xml"));
 		processor.processDocumentFile(file);

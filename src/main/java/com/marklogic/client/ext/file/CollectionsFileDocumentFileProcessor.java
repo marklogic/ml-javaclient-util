@@ -15,6 +15,9 @@
  */
 package com.marklogic.client.ext.file;
 
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -37,14 +40,13 @@ public class CollectionsFileDocumentFileProcessor extends CascadingPropertiesDri
 	@Override
 	protected void processProperties(DocumentFile documentFile, Properties properties) {
 		String name = documentFile.getFile().getName();
-		if (properties.containsKey(name)) {
-			String value = getPropertyValue(properties, name);
-			documentFile.getDocumentMetadata().withCollections(value.split(delimiter));
-		}
-
-		if (properties.containsKey(WILDCARD_KEY)) {
-			String value = getPropertyValue(properties, WILDCARD_KEY);
-			documentFile.getDocumentMetadata().withCollections(value.split(delimiter));
+		Enumeration keys = properties.propertyNames();
+		while (keys.hasMoreElements()) {
+			String key = (String) keys.nextElement();
+			if (name.matches(convertGlobToRegex(key))) {
+				String value = getPropertyValue(properties, key);
+				documentFile.getDocumentMetadata().withCollections(value.split(delimiter));
+			}
 		}
 	}
 
