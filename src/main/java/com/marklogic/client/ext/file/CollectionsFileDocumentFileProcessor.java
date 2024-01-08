@@ -15,9 +15,10 @@
  */
 package com.marklogic.client.ext.file;
 
-import java.util.ArrayList;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.Properties;
 
 /**
@@ -39,11 +40,13 @@ public class CollectionsFileDocumentFileProcessor extends CascadingPropertiesDri
 
 	@Override
 	protected void processProperties(DocumentFile documentFile, Properties properties) {
-		String name = documentFile.getFile().getName();
+		Path name = documentFile.getFile().toPath().getFileName();
 		Enumeration keys = properties.propertyNames();
 		while (keys.hasMoreElements()) {
 			String key = (String) keys.nextElement();
-			if (name.matches(convertGlobToRegex(key))) {
+			PathMatcher matcher =
+				FileSystems.getDefault().getPathMatcher( "glob:" + key);
+			if (matcher.matches(name)) {
 				String value = getPropertyValue(properties, key);
 				documentFile.getDocumentMetadata().withCollections(value.split(delimiter));
 			}

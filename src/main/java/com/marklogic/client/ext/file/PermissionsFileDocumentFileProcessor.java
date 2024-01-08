@@ -17,6 +17,9 @@ package com.marklogic.client.ext.file;
 
 import com.marklogic.client.ext.util.DocumentPermissionsParser;
 
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -49,11 +52,13 @@ public class PermissionsFileDocumentFileProcessor extends CascadingPropertiesDri
 
 	@Override
 	protected void processProperties(DocumentFile documentFile, Properties properties) {
-		String name = documentFile.getFile().getName();
+		Path name = documentFile.getFile().toPath().getFileName();
 		Enumeration keys = properties.propertyNames();
 		while (keys.hasMoreElements()) {
 			String key = (String) keys.nextElement();
-			if (name.matches(convertGlobToRegex(key))) {
+			PathMatcher matcher =
+				FileSystems.getDefault().getPathMatcher( "glob:" + key);
+			if (matcher.matches(name)) {
 				String value = getPropertyValue(properties, key);
 				if (documentPermissionsParser != null) {
 					documentPermissionsParser.parsePermissions(value, documentFile.getDocumentMetadata().getPermissions());
